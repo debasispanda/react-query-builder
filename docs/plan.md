@@ -192,13 +192,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Create `src/utils/contextDetector.ts`:
+- [x] Create `src/utils/contextDetector.ts`:
   - Export function: `detectContext(tokens: Token[], cursorTokenIndex: number): 'FIELD' | 'OPERATOR' | 'VALUE'`
   - Logic: count complete token sequences; determine next expected type
   - Example: after tokens `[FIELD, OPERATOR]`, next context is VALUE
   - Example: after tokens `[FIELD, OPERATOR, VALUE]`, next context is FIELD (for new clause)
 
-- [ ] Create `src/components/QueryInput.tsx`:
+- [x] Create `src/components/QueryInput.tsx`:
   - Props: `value`, `onChange`, `onContextChange`, `isError`, `errorMessage`
   - Render `shadcn/ui Textarea` component
   - Track state: `queryText`, `cursorPos`
@@ -208,14 +208,14 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
   - Apply CSS class `jql-input--error` if `isError` prop is true (red border)
   - Display error message below textarea if `errorMessage` provided
 
-- [ ] Write contextDetector unit tests in `src/__tests__/contextDetector.test.ts`:
-  - [ ] After 0 tokens → context is FIELD
-  - [ ] After 1 token (FIELD) → context is OPERATOR
-  - [ ] After 2 tokens (FIELD, OPERATOR) → context is VALUE
-  - [ ] After 3 tokens (FIELD, OPERATOR, VALUE) → context is FIELD (new clause)
-  - [ ] After 5 tokens (...FIELD, OPERATOR, VALUE, CONNECTOR, FIELD) → context is OPERATOR
+- [x] Write contextDetector unit tests in `src/__tests__/contextDetector.test.ts`:
+  - [x] After 0 tokens → context is FIELD
+  - [x] After 1 token (FIELD) → context is OPERATOR
+  - [x] After 2 tokens (FIELD, OPERATOR) → context is VALUE
+  - [x] After 3 tokens (FIELD, OPERATOR, VALUE) → context is FIELD (new clause)
+  - [x] After 5 tokens (...FIELD, OPERATOR, VALUE, CONNECTOR, FIELD) → context is OPERATOR
 
-- [ ] Verify contextDetector tests pass
+- [x] Verify contextDetector tests pass
 
 **Success Criteria**:
 - ✅ QueryInput textarea renders and accepts user input
@@ -226,10 +226,10 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] `src/components/QueryInput.tsx` renders textarea
-- [ ] Cursor position tracked on keystroke
-- [ ] `src/utils/contextDetector.ts` correctly identifies FIELD/OPERATOR/VALUE
-- [ ] All contextDetector tests pass
+- [x] `src/components/QueryInput.tsx` renders textarea
+- [x] Cursor position tracked on keystroke
+- [x] `src/utils/contextDetector.ts` correctly identifies FIELD/OPERATOR/VALUE
+- [x] All contextDetector tests pass
 
 ---
 
