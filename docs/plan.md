@@ -91,7 +91,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Create `src/types/jql.ts`:
+- [x] Create `src/types/jql.ts`:
   ```typescript
   export type TokenType = 'FIELD' | 'OPERATOR' | 'VALUE' | 'CONNECTOR' | 'UNKNOWN';
   
@@ -121,7 +121,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
   }
   ```
 
-- [ ] Create `src/utils/schema.ts`:
+- [x] Create `src/utils/schema.ts`:
   ```typescript
   export const SCHEMA_FIELDS: FieldDef[] = [
     { name: 'project', type: 'string', operators: ['=', '!=', 'IN'] },
@@ -144,24 +144,24 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
   }
   ```
 
-- [ ] Create `src/utils/tokenizer.ts`:
+- [x] Create `src/utils/tokenizer.ts`:
   - Use regex `/("[^"]*"|[^\s]+)/g` to split by unquoted spaces
   - Strip outer quotes from quoted strings but preserve content
   - Infer token type by position: 1st token = FIELD, 2nd = OPERATOR, 3rd+ = VALUE or CONNECTOR
   - Detect AND/OR/NOT as CONNECTOR type
   - Export function: `tokenize(input: string): Token[]`
 
-- [ ] Write tokenizer unit tests in `src/__tests__/tokenizer.test.ts`:
-  - [ ] Test simple: `project = "Marketing"` → 3 tokens (FIELD, OPERATOR, VALUE)
-  - [ ] Test with spaces in value: `project = "My Project"` → 3 tokens (VALUE includes space)
-  - [ ] Test without quotes: `status = active` → 3 tokens (single-word values unquoted)
-  - [ ] Test chained AND: `project = "Design" AND status = "ToDo"` → 7 tokens
-  - [ ] Test chained OR: `project = "Design" OR priority = "High"` → 7 tokens
-  - [ ] Test multiple spaces: `project  =  "value"` → 3 tokens (extra spaces normalized)
-  - [ ] Test edge case: empty string → empty token array
-  - [ ] Test edge case: trailing spaces → ignored
+- [x] Write tokenizer unit tests in `src/__tests__/tokenizer.test.ts`:
+  - [x] Test simple: `project = "Marketing"` → 3 tokens (FIELD, OPERATOR, VALUE)
+  - [x] Test with spaces in value: `project = "My Project"` → 3 tokens (VALUE includes space)
+  - [x] Test without quotes: `status = active` → 3 tokens (single-word values unquoted)
+  - [x] Test chained AND: `project = "Design" AND status = "ToDo"` → 7 tokens
+  - [x] Test chained OR: `project = "Design" OR priority = "High"` → 7 tokens
+  - [x] Test multiple spaces: `project  =  "value"` → 3 tokens (extra spaces normalized)
+  - [x] Test edge case: empty string → empty token array
+  - [x] Test edge case: trailing spaces → ignored
 
-- [ ] Verify all tokenizer tests pass: `npm run test`
+- [x] Verify all tokenizer tests pass: `npm run test`
 
 **Success Criteria**:
 - ✅ TypeScript types defined in `src/types/jql.ts`
@@ -416,10 +416,10 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - [x] All dependencies installed
 
 ### Phase 2: Data Model & Schema
-- [ ] `src/types/jql.ts` defines all types
-- [ ] `src/utils/schema.ts` exports 4 hardcoded fields with operators
-- [ ] `src/utils/tokenizer.ts` correctly handles quotes, spaces, chaining
-- [ ] All tokenizer unit tests pass (8+ cases)
+- [x] `src/types/jql.ts` defines all types
+- [x] `src/utils/schema.ts` exports 4 hardcoded fields with operators
+- [x] `src/utils/tokenizer.ts` correctly handles quotes, spaces, chaining
+- [x] All tokenizer unit tests pass (8+ cases)
 
 ### Phase 3: Query Input
 - [ ] `src/components/QueryInput.tsx` renders textarea
