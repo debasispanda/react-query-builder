@@ -83,6 +83,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ All dependencies installed correctly
 - ✅ Folder structure matches above layout
 
+### Verification
+
+- [x] `npm run dev` launches without errors
+- [x] `npm run test` starts Vitest watch mode
+- [x] Folder structure matches plan
+- [x] All dependencies installed
+
 ---
 
 ## Phase 2: Data Model & Schema Definition
@@ -170,6 +177,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ Token types (FIELD, OPERATOR, VALUE, CONNECTOR) correctly inferred
 - ✅ All tokenizer unit tests pass (8+ test cases)
 
+### Verification
+
+- [x] `src/types/jql.ts` defines all types
+- [x] `src/utils/schema.ts` exports 4 hardcoded fields with operators
+- [x] `src/utils/tokenizer.ts` correctly handles quotes, spaces, chaining
+- [x] All tokenizer unit tests pass (8+ cases)
+
 ---
 
 ## Phase 3: Query Input Component
@@ -209,6 +223,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ Context detection correctly identifies FIELD/OPERATOR/VALUE phases
 - ✅ Error styling applied when `isError={true}`
 - ✅ All contextDetector unit tests pass
+
+### Verification
+
+- [ ] `src/components/QueryInput.tsx` renders textarea
+- [ ] Cursor position tracked on keystroke
+- [ ] `src/utils/contextDetector.ts` correctly identifies FIELD/OPERATOR/VALUE
+- [ ] All contextDetector tests pass
 
 ---
 
@@ -253,6 +274,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ Mouse click selects suggestion
 - ✅ Selected suggestion injects into textarea at cursor position
 - ✅ Cursor positioned correctly after injection
+
+### Verification
+
+- [ ] Popover opens when typing
+- [ ] Suggestions filter by partial match (e.g., `pro` → `project`)
+- [ ] Keyboard navigation works (arrows, Enter, Escape)
+- [ ] Selected suggestion injects into textarea
 
 ---
 
@@ -305,6 +333,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ JQLEditor component integrates input + popover + validation
 - ✅ All validator unit tests pass (8+ test cases)
 
+### Verification
+
+- [ ] All validator unit tests pass (8+ cases)
+- [ ] Incomplete queries show error with message
+- [ ] Error clears when query becomes valid
+- [ ] Invalid field/operator names caught
+
 ---
 
 ## Phase 6: Output Generation
@@ -350,6 +385,13 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ Both raw and normalized strings returned
 - ✅ Output can be consumed by backend API
 - ✅ All queryBuilder unit tests pass
+
+### Verification
+
+- [ ] All queryBuilder tests pass
+- [ ] Spacing normalized correctly
+- [ ] Quoted spaces preserved
+- [ ] Both raw and normalized strings returned
 
 ---
 
@@ -405,47 +447,8 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 - ✅ Error states shown and cleared correctly
 - ✅ Keyboard and mouse navigation both functional
 
----
+### Verification
 
-## Verification Checklist
-
-### Phase 1: Scaffolding
-- [x] `npm run dev` launches without errors
-- [x] `npm run test` starts Vitest watch mode
-- [x] Folder structure matches plan
-- [x] All dependencies installed
-
-### Phase 2: Data Model & Schema
-- [x] `src/types/jql.ts` defines all types
-- [x] `src/utils/schema.ts` exports 4 hardcoded fields with operators
-- [x] `src/utils/tokenizer.ts` correctly handles quotes, spaces, chaining
-- [x] All tokenizer unit tests pass (8+ cases)
-
-### Phase 3: Query Input
-- [ ] `src/components/QueryInput.tsx` renders textarea
-- [ ] Cursor position tracked on keystroke
-- [ ] `src/utils/contextDetector.ts` correctly identifies FIELD/OPERATOR/VALUE
-- [ ] All contextDetector tests pass
-
-### Phase 4: Suggestions
-- [ ] Popover opens when typing
-- [ ] Suggestions filter by partial match (e.g., `pro` → `project`)
-- [ ] Keyboard navigation works (arrows, Enter, Escape)
-- [ ] Selected suggestion injects into textarea
-
-### Phase 5: Validation
-- [ ] All validator unit tests pass (8+ cases)
-- [ ] Incomplete queries show error with message
-- [ ] Error clears when query becomes valid
-- [ ] Invalid field/operator names caught
-
-### Phase 6: Output
-- [ ] All queryBuilder tests pass
-- [ ] Spacing normalized correctly
-- [ ] Quoted spaces preserved
-- [ ] Both raw and normalized strings returned
-
-### Phase 7: Integration
 - [ ] All integration tests pass (8+ cases)
 - [ ] End-to-end workflows functional
 - [ ] Error handling end-to-end
