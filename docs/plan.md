@@ -239,7 +239,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Create `src/utils/suggestionProvider.ts`:
+- [x] Create `src/utils/suggestionProvider.ts`:
   - Export function: `getSuggestions(context: 'FIELD' | 'OPERATOR' | 'VALUE', partial: string, currentField?: string): string[]`
   - Context FIELD: filter field names by case-insensitive partial match
     - Example: partial `pro` → suggestions `['project']`
@@ -248,7 +248,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
   - Context VALUE: return empty array for MVP (values will be API-driven in future phases)
   - Use case-insensitive matching with `.toLowerCase().includes()`
 
-- [ ] Create `src/components/SuggestionPopover.tsx`:
+- [x] Create `src/components/SuggestionPopover.tsx`:
   - Props: `isOpen`, `suggestions`, `onSelect`, `context`, `anchorEl` (for positioning)
   - Use `shadcn/ui Popover` + `Command` components from shadcn/ui library
   - Render `CommandList` with suggestions grouped by context (e.g., Fields, Operators)
@@ -256,16 +256,16 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
   - Mouse click to select suggestion
   - Highlight filtered suggestions based on partial match
 
-- [ ] Integrate SuggestionPopover with QueryInput:
+- [x] Integrate SuggestionPopover with QueryInput:
   - Pass state from QueryInput to popover
   - On suggestion select: inject text into textarea at current cursor position
   - Update cursor position after injection
   - Re-tokenize and validate after injection
 
-- [ ] Write integration test for suggestion flow:
-  - [ ] User types `pro` in empty textarea → popover shows `project` suggestion
-  - [ ] User presses Enter → `project` injected into textarea
-  - [ ] Cursor positioned after `project`
+- [x] Write integration test for suggestion flow:
+  - [x] User types `pro` in empty textarea → popover shows `project` suggestion
+  - [x] User presses Enter → `project` injected into textarea
+  - [x] Cursor positioned after `project`
 
 **Success Criteria**:
 - ✅ Popover opens when user types and context is FIELD/OPERATOR
@@ -277,10 +277,10 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] Popover opens when typing
-- [ ] Suggestions filter by partial match (e.g., `pro` → `project`)
-- [ ] Keyboard navigation works (arrows, Enter, Escape)
-- [ ] Selected suggestion injects into textarea
+- [x] Popover opens when typing
+- [x] Suggestions filter by partial match (e.g., `pro` → `project`)
+- [x] Keyboard navigation works (arrows, Enter, Escape)
+- [x] Selected suggestion injects into textarea
 
 ---
 

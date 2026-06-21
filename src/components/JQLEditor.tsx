@@ -1,7 +1,197 @@
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+
+import type { QueryInputContext, Token } from '@/types/jql'
+import { QueryInput } from '@/components/QueryInput'
+import { SuggestionPopover } from '@/components/SuggestionPopover'
+import { detectContext } from '@/utils/contextDetector'
+import { getSuggestions } from '@/utils/suggestionProvider'
+import { tokenize } from '@/utils/tokenizer'
+
+const TOKEN_PATTERN = /"[^"]*"|[^\s]+/g
+
+interface TokenRange {
+  start: number
+  end: number
+}
+
+interface SuggestionState {
+  context: QueryInputContext
+  partial: string
+  currentField?: string
+  replacementRange: TokenRange
+}
+
+function findCurrentField(tokens: Token[]): string | undefined {
+  for (let index = tokens.length - 1; index >= 0; index -= 1) {
+    if (tokens[index].type === 'FIELD') {
+      return tokens[index].value
+    }
+  }
+
+  return undefined
+}
+
+function findTokenRange(queryText: string, cursorPos: number): TokenRange | null {
+  for (const match of queryText.matchAll(TOKEN_PATTERN)) {
+    const start = match.index ?? 0
+    const end = start + match[0].length
+
+    if (cursorPos >= start && cursorPos <= end) {
+      return { start, end }
+    }
+  }
+
+  return null
+}
+
+function getSuggestionState(queryText: string, cursorPos: number): SuggestionState {
+  const beforeCursor = queryText.slice(0, cursorPos)
+  const hasTrailingSpace = /\s$/.test(beforeCursor)
+  const tokensBeforeCursor = tokenize(beforeCursor)
+  const activeTokenRange = findTokenRange(queryText, cursorPos)
+
+  if (!beforeCursor || hasTrailingSpace || !activeTokenRange) {
+    return {
+      context: detectContext(tokensBeforeCursor, tokensBeforeCursor.length),
+      partial: '',
+      currentField: findCurrentField(tokensBeforeCursor),
+      replacementRange: {
+        start: cursorPos,
+        end: cursorPos,
+      },
+    }
+  }
+
+  const completedTokenText = queryText.slice(0, activeTokenRange.start).trim()
+  const completedTokens = tokenize(completedTokenText)
+
+  return {
+    context: detectContext(completedTokens, completedTokens.length),
+    partial: queryText.slice(activeTokenRange.start, cursorPos),
+    currentField: findCurrentField(completedTokens),
+    replacementRange: activeTokenRange,
+  }
+}
+
 export function JQLEditor() {
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [queryText, setQueryText] = useState('')
+  const [cursorPos, setCursorPos] = useState(0)
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const [isPopoverDismissed, setIsPopoverDismissed] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const suggestionState = useMemo(
+    () => getSuggestionState(queryText, cursorPos),
+    [cursorPos, queryText],
+  )
+
+  const suggestions = useMemo(
+    () =>
+      getSuggestions(
+        suggestionState.context,
+        suggestionState.partial,
+        suggestionState.currentField,
+      ),
+    [suggestionState.context, suggestionState.currentField, suggestionState.partial],
+  )
+
+  const isSuggestionOpen =
+    isInputFocused &&
+    !isPopoverDismissed &&
+    suggestionState.context !== 'VALUE' &&
+    suggestions.length > 0
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [suggestions, suggestionState.context, suggestionState.partial])
+
+  function updateQuery(nextValue: string) {
+    setQueryText(nextValue)
+    setIsPopoverDismissed(false)
+  }
+
+  function applySuggestion(suggestion: string) {
+    const { start, end } = suggestionState.replacementRange
+    const nextValue = `${queryText.slice(0, start)}${suggestion}${queryText.slice(end)}`
+    const nextCursorPos = start + suggestion.length
+
+    setQueryText(nextValue)
+    setCursorPos(nextCursorPos)
+    setActiveIndex(0)
+    setIsPopoverDismissed(true)
+
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus()
+      textareaRef.current?.setSelectionRange(nextCursorPos, nextCursorPos)
+    })
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (!isSuggestionOpen) {
+      return
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setActiveIndex((currentIndex) => (currentIndex + 1) % suggestions.length)
+      return
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setActiveIndex(
+        (currentIndex) => (currentIndex - 1 + suggestions.length) % suggestions.length,
+      )
+      return
+    }
+
+    if (event.key === 'Enter' || event.key === 'Tab') {
+      event.preventDefault()
+      applySuggestion(suggestions[activeIndex])
+      return
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setIsPopoverDismissed(true)
+    }
+  }
+
   return (
-    <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-      Query input and suggestions will be implemented in Phase 2 onward.
+    <div className="space-y-3">
+      <div className="relative">
+        <QueryInput
+          value={queryText}
+          onChange={updateQuery}
+          onCursorChange={setCursorPos}
+          onFocus={() => {
+            setIsInputFocused(true)
+            setIsPopoverDismissed(false)
+          }}
+          onContextChange={(context) => {
+            if (context === null) {
+              setIsInputFocused(false)
+            }
+          }}
+          onKeyDown={handleKeyDown}
+          textareaRef={textareaRef}
+        />
+        <SuggestionPopover
+          isOpen={isSuggestionOpen}
+          suggestions={suggestions}
+          onSelect={applySuggestion}
+          onActiveIndexChange={setActiveIndex}
+          activeIndex={activeIndex}
+          context={suggestionState.context}
+          anchorEl={textareaRef.current}
+          partial={suggestionState.partial}
+        />
+      </div>
+      <p className="text-sm text-slate-600">
+        Start typing a field name, then add an operator. Values remain plain text for
+        the MVP.
+      </p>
     </div>
   )
 }
