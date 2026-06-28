@@ -348,7 +348,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Create `src/utils/queryBuilder.ts`:
+- [x] Create `src/utils/queryBuilder.ts`:
   - Export function: `buildQueryOutput(queryText: string, tokens: Token[], isValid: boolean): QueryOutput`
   - Normalize spacing: standardize to single spaces around operators and connectors
     - Example: `project="Marketing"` → `project = "Marketing"`
@@ -366,18 +366,18 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
     }
     ```
 
-- [ ] Integrate output generation with JQLEditor:
+- [x] Integrate output generation with JQLEditor:
   - Export method/callback `getOutput(): QueryOutput` to parent
   - Expose output for debugging/inspection
 
-- [ ] Write queryBuilder unit tests in `src/__tests__/queryBuilder.test.ts`:
-  - [ ] Spacing normalization: `project="Marketing"` → `project = "Marketing"`
-  - [ ] Multiple spaces: `project  =  "value"` → `project = "value"`
-  - [ ] Preserve quoted spaces: input `project = "My Project"` → output preserves `"My Project"`
-  - [ ] Chained query normalization: `project="Design"AND status="ToDo"` → `project = "Design" AND status = "ToDo"`
-  - [ ] Mixed spacing: normalize consistently
+- [x] Write queryBuilder unit tests in `src/__tests__/queryBuilder.test.ts`:
+  - [x] Spacing normalization: `project="Marketing"` → `project = "Marketing"`
+  - [x] Multiple spaces: `project  =  "value"` → `project = "value"`
+  - [x] Preserve quoted spaces: input `project = "My Project"` → output preserves `"My Project"`
+  - [x] Chained query normalization: `project="Design"AND status="ToDo"` → `project = "Design" AND status = "ToDo"`
+  - [x] Mixed spacing: normalize consistently
 
-- [ ] Verify all queryBuilder tests pass
+- [x] Verify all queryBuilder tests pass
 
 **Success Criteria**:
 - ✅ Output normalizes spacing correctly
@@ -388,10 +388,10 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] All queryBuilder tests pass
-- [ ] Spacing normalized correctly
-- [ ] Quoted spaces preserved
-- [ ] Both raw and normalized strings returned
+- [x] All queryBuilder tests pass
+- [x] Spacing normalized correctly
+- [x] Quoted spaces preserved
+- [x] Both raw and normalized strings returned
 
 ---
 

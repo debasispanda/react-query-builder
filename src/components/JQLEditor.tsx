@@ -4,6 +4,7 @@ import type { QueryInputContext, QueryOutput, Token } from '@/types/jql'
 import { QueryInput } from '@/components/QueryInput'
 import { SuggestionPopover } from '@/components/SuggestionPopover'
 import { detectContext } from '@/utils/contextDetector'
+import { buildQueryOutput } from '@/utils/queryBuilder'
 import { getSuggestions } from '@/utils/suggestionProvider'
 import { tokenize } from '@/utils/tokenizer'
 import { validate } from '@/utils/validator'
@@ -120,13 +121,9 @@ export function JQLEditor({ onValidChange, onOutputChange }: JQLEditorProps) {
   }, [onValidChange, validation.isValid])
 
   useEffect(() => {
-    onOutputChange?.({
-      raw: queryText,
-      normalized: queryText,
-      tokens,
-      isValid: validation.isValid,
-      error: validation.error,
-    })
+    onOutputChange?.(
+      buildQueryOutput(queryText, tokens, validation.isValid, validation.error),
+    )
   }, [onOutputChange, queryText, tokens, validation.error, validation.isValid])
 
   function updateQuery(nextValue: string) {
