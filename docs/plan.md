@@ -290,7 +290,7 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Create `src/utils/validator.ts`:
+- [x] Create `src/utils/validator.ts`:
   - Export function: `validate(tokens: Token[]): { isValid: boolean; error?: string }`
   - Validation rules for MVP:
     - Query must start with FIELD (or be empty)
@@ -305,25 +305,25 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
     - "Invalid operator: ~ for field project"
     - "Incomplete query: expected OPERATOR after field"
 
-- [ ] Create `src/components/JQLEditor.tsx` (main wrapper):
+- [x] Create `src/components/JQLEditor.tsx` (main wrapper):
   - Combine QueryInput + SuggestionPopover
   - Manage state: `queryText`, `tokens`, `isValid`, `error`, `suggestions`, `cursorPos`, `context`
   - Props: `onValidChange` (callback when query validity changes), `onOutputChange` (emit QueryOutput)
   - Re-validate on every input change
   - Update error state and visual feedback
 
-- [ ] Write validator unit tests in `src/__tests__/validator.test.ts`:
-  - [ ] Empty query → valid (empty state)
-  - [ ] Complete single: `project = "Marketing"` → valid
-  - [ ] Incomplete single: `project =` → invalid, error message
-  - [ ] Incomplete single: `project` → invalid, error message
-  - [ ] Invalid field: `unknown_field = "value"` → invalid, error message
-  - [ ] Invalid operator: `project ~ "value"` → invalid, error message
-  - [ ] Valid chained: `project = "Design" AND status = "ToDo"` → valid
-  - [ ] Incomplete chained: `project = "Design" AND status =` → invalid, error message
-  - [ ] Invalid CONNECTOR: `project = "Design" XOR status = "ToDo"` → invalid, error message
+- [x] Write validator unit tests in `src/__tests__/validator.test.ts`:
+  - [x] Empty query → valid (empty state)
+  - [x] Complete single: `project = "Marketing"` → valid
+  - [x] Incomplete single: `project =` → invalid, error message
+  - [x] Incomplete single: `project` → invalid, error message
+  - [x] Invalid field: `unknown_field = "value"` → invalid, error message
+  - [x] Invalid operator: `project ~ "value"` → invalid, error message
+  - [x] Valid chained: `project = "Design" AND status = "ToDo"` → valid
+  - [x] Incomplete chained: `project = "Design" AND status =` → invalid, error message
+  - [x] Invalid CONNECTOR: `project = "Design" XOR status = "ToDo"` → invalid, error message
 
-- [ ] Verify all validator tests pass
+- [x] Verify all validator tests pass
 
 **Success Criteria**:
 - ✅ Validator catches incomplete queries with specific error messages
@@ -335,10 +335,10 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] All validator unit tests pass (8+ cases)
-- [ ] Incomplete queries show error with message
-- [ ] Error clears when query becomes valid
-- [ ] Invalid field/operator names caught
+- [x] All validator unit tests pass (8+ cases)
+- [x] Incomplete queries show error with message
+- [x] Error clears when query becomes valid
+- [x] Invalid field/operator names caught
 
 ---
 

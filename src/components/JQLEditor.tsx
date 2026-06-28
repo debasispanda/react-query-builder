@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 
-import type { QueryInputContext, Token } from '@/types/jql'
+import type { QueryInputContext, QueryOutput, Token } from '@/types/jql'
 import { QueryInput } from '@/components/QueryInput'
 import { SuggestionPopover } from '@/components/SuggestionPopover'
 import { detectContext } from '@/utils/contextDetector'
 import { getSuggestions } from '@/utils/suggestionProvider'
 import { tokenize } from '@/utils/tokenizer'
+import { validate } from '@/utils/validator'
 
 const TOKEN_PATTERN = /"[^"]*"|[^\s]+/g
 
@@ -73,13 +74,21 @@ function getSuggestionState(queryText: string, cursorPos: number): SuggestionSta
   }
 }
 
-export function JQLEditor() {
+interface JQLEditorProps {
+  onValidChange?: (isValid: boolean) => void
+  onOutputChange?: (output: QueryOutput) => void
+}
+
+export function JQLEditor({ onValidChange, onOutputChange }: JQLEditorProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [queryText, setQueryText] = useState('')
   const [cursorPos, setCursorPos] = useState(0)
   const [isInputFocused, setIsInputFocused] = useState(false)
   const [isPopoverDismissed, setIsPopoverDismissed] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const tokens = useMemo(() => tokenize(queryText), [queryText])
+  const validation = useMemo(() => validate(tokens), [tokens])
 
   const suggestionState = useMemo(
     () => getSuggestionState(queryText, cursorPos),
@@ -105,6 +114,20 @@ export function JQLEditor() {
   useEffect(() => {
     setActiveIndex(0)
   }, [suggestions, suggestionState.context, suggestionState.partial])
+
+  useEffect(() => {
+    onValidChange?.(validation.isValid)
+  }, [onValidChange, validation.isValid])
+
+  useEffect(() => {
+    onOutputChange?.({
+      raw: queryText,
+      normalized: queryText,
+      tokens,
+      isValid: validation.isValid,
+      error: validation.error,
+    })
+  }, [onOutputChange, queryText, tokens, validation.error, validation.isValid])
 
   function updateQuery(nextValue: string) {
     setQueryText(nextValue)
@@ -176,6 +199,8 @@ export function JQLEditor() {
           }}
           onKeyDown={handleKeyDown}
           textareaRef={textareaRef}
+          isError={!validation.isValid}
+          errorMessage={validation.error}
         />
         <SuggestionPopover
           isOpen={isSuggestionOpen}
