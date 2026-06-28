@@ -401,45 +401,45 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Write integration tests in `src/__tests__/JQLEditor.integration.test.tsx`:
-  - [ ] **Test 1**: User types complete single query → output is valid
+- [x] Write integration tests in `src/__tests__/JQLEditor.integration.test.tsx`:
+  - [x] **Test 1**: User types complete single query → output is valid
     - Type: `project = "Marketing"`
     - Assert: `isValid === true`, output generated
   
-  - [ ] **Test 2**: User types incomplete query → error shown, invalid state
+  - [x] **Test 2**: User types incomplete query → error shown, invalid state
     - Type: `project =`
     - Assert: `isValid === false`, error message displayed ("Incomplete query...")
   
-  - [ ] **Test 3**: User deletes operator → error clears when complete
+  - [x] **Test 3**: User deletes operator → error clears when complete
     - Type: `project = "Marketing"` → Delete `=` and space → Type `= "Marketing"`
     - Assert: Error shown during incomplete state, cleared when complete again
   
-  - [ ] **Test 4**: User selects suggestion from dropdown
+  - [x] **Test 4**: User selects suggestion from dropdown
     - Type: `pro` → Popover shows `project` → Press Enter or click
     - Assert: `project` injected into textarea, cursor positioned after
   
-  - [ ] **Test 5**: User types chained AND query → tokenizes correctly
+  - [x] **Test 5**: User types chained AND query → tokenizes correctly
     - Type: `project = "Design" AND status = "ToDo"`
     - Assert: 7 tokens with correct types, query valid
   
-  - [ ] **Test 6**: Keyboard navigation through suggestions
+  - [x] **Test 6**: Keyboard navigation through suggestions
     - Type: `pro` → Popover opens → Press Arrow Down → Enter
     - Assert: Suggestion highlighted and selected correctly
   
-  - [ ] **Test 7**: User types invalid field → error caught
+  - [x] **Test 7**: User types invalid field → error caught
     - Type: `invalid_field = "value"`
     - Assert: `isValid === false`, error message: "Invalid field name: invalid_field"
   
-  - [ ] **Test 8**: User types invalid operator → error caught
+  - [x] **Test 8**: User types invalid operator → error caught
     - Type: `project ~ "value"` (tilde not valid for project)
     - Assert: `isValid === false`, error message: "Invalid operator..."
 
-- [ ] Use React Testing Library:
+- [x] Use React Testing Library:
   - Render `<JQLEditor />`
   - Use `userEvent` for typing, keyboard navigation, mouse clicks
   - Assert on textarea value, error display, suggestion list visibility, output validity
 
-- [ ] Verify all integration tests pass: `npm run test`
+- [x] Verify all integration tests pass: `npm run test`
 
 **Success Criteria**:
 - ✅ All integration tests pass (8+ test cases)
@@ -449,9 +449,9 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] All integration tests pass (8+ cases)
-- [ ] End-to-end workflows functional
-- [ ] Error handling end-to-end
+- [x] All integration tests pass (8+ cases)
+- [x] End-to-end workflows functional
+- [x] Error handling end-to-end
 
 ---
 
