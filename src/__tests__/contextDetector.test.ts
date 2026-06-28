@@ -21,8 +21,10 @@ describe('detectContext', () => {
     expect(detectContext(makeTokens(['FIELD', 'OPERATOR']), 2)).toBe('VALUE')
   })
 
-  it('returns FIELD after a complete single clause', () => {
-    expect(detectContext(makeTokens(['FIELD', 'OPERATOR', 'VALUE']), 3)).toBe('FIELD')
+  it('returns CONNECTOR after a complete single clause', () => {
+    expect(detectContext(makeTokens(['FIELD', 'OPERATOR', 'VALUE']), 3)).toBe(
+      'CONNECTOR',
+    )
   })
 
   it('returns OPERATOR when the cursor is after a field in the next clause', () => {

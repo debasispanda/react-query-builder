@@ -461,15 +461,15 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Substeps
 
-- [ ] Extend context model in `src/types/jql.ts` to support connector expectation after a completed clause
-- [ ] Update `src/utils/contextDetector.ts` to return connector context after `FIELD -> OPERATOR -> VALUE`
-- [ ] Update `src/utils/suggestionProvider.ts`:
-  - [ ] Add connector suggestions (`AND`, `OR`, `NOT`) for connector context
-  - [ ] Keep existing field/operator filtering unchanged for current contexts
-- [ ] Update `src/components/JQLEditor.tsx` to open suggestions for connector context by default
-- [ ] Add tests in `src/__tests__/contextDetector.test.ts` for connector context transitions
-- [ ] Add tests in `src/__tests__/suggestionProvider.test.ts` for connector suggestions
-- [ ] Add integration coverage in `src/__tests__/JQLEditor.integration.test.tsx` to validate connector suggestions appear after value entry
+- [x] Extend context model in `src/types/jql.ts` to support connector expectation after a completed clause
+- [x] Update `src/utils/contextDetector.ts` to return connector context after `FIELD -> OPERATOR -> VALUE`
+- [x] Update `src/utils/suggestionProvider.ts`:
+  - [x] Add connector suggestions (`AND`, `OR`, `NOT`) for connector context
+  - [x] Keep existing field/operator filtering unchanged for current contexts
+- [x] Update `src/components/JQLEditor.tsx` to open suggestions for connector context by default
+- [x] Add tests in `src/__tests__/contextDetector.test.ts` for connector context transitions
+- [x] Add tests in `src/__tests__/suggestionProvider.test.ts` for connector suggestions
+- [x] Add integration coverage in `src/__tests__/JQLEditor.integration.test.tsx` to validate connector suggestions appear after value entry
 
 **Success Criteria**:
 - ✅ Connectors appear by default when a clause is complete
@@ -478,9 +478,9 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ### Verification
 
-- [ ] Context detector returns connector context after complete clause
-- [ ] Suggestion provider returns `AND`/`OR`/`NOT` for connector context
-- [ ] Integration test confirms connector dropdown appears after value
+- [x] Context detector returns connector context after complete clause
+- [x] Suggestion provider returns `AND`/`OR`/`NOT` for connector context
+- [x] Integration test confirms connector dropdown appears after value
 
 ---
 

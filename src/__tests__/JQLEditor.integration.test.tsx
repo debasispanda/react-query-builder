@@ -107,6 +107,24 @@ describe('JQLEditor integration', () => {
     await waitFor(() => expect(input.selectionStart).toBe(10))
   })
 
+  it('shows connector suggestions after completing a clause and typing a space', async () => {
+    const user = userEvent.setup()
+
+    render(<JQLEditor />)
+
+    const input = screen.getByRole('textbox')
+
+    await user.type(input, 'project = "Design"')
+
+    expect(screen.queryByRole('option', { name: 'AND' })).not.toBeInTheDocument()
+
+    await user.type(input, ' ')
+
+    expect(screen.getByRole('option', { name: 'AND' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'OR' })).toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'NOT' })).toBeInTheDocument()
+  })
+
   it('emits correct tokens for a chained AND query', async () => {
     const user = userEvent.setup()
     const onOutputChange = vi.fn()

@@ -20,5 +20,13 @@ export function detectContext(
     return 'VALUE'
   }
 
+  if (lastToken.type === 'VALUE') {
+    return 'CONNECTOR'
+  }
+
+  if (lastToken.type === 'CONNECTOR') {
+    return 'FIELD'
+  }
+
   return 'FIELD'
 }

@@ -29,6 +29,10 @@ function getGroupHeading(context: QueryInputContext) {
     return 'Operators'
   }
 
+  if (context === 'CONNECTOR') {
+    return 'Connectors'
+  }
+
   return 'Values'
 }
 

@@ -1,6 +1,8 @@
 import type { QueryInputContext } from '@/types/jql'
 import { getFieldNames, getOperatorsForField } from '@/utils/schema'
 
+const CONNECTORS = ['AND', 'OR', 'NOT']
+
 function filterSuggestions(values: string[], partial: string): string[] {
   const normalizedPartial = partial.trim().toLowerCase()
 
@@ -26,6 +28,10 @@ export function getSuggestions(
     }
 
     return filterSuggestions(getOperatorsForField(currentField), partial)
+  }
+
+  if (context === 'CONNECTOR') {
+    return filterSuggestions(CONNECTORS, partial)
   }
 
   return []

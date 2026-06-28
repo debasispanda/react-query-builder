@@ -1,5 +1,5 @@
 export type TokenType = 'FIELD' | 'OPERATOR' | 'VALUE' | 'CONNECTOR' | 'UNKNOWN'
-export type QueryInputContext = 'FIELD' | 'OPERATOR' | 'VALUE'
+export type QueryInputContext = 'FIELD' | 'OPERATOR' | 'VALUE' | 'CONNECTOR'
 
 export interface Token {
   value: string

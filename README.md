@@ -106,7 +106,7 @@ src/
 The editor emits a query output payload shaped as:
 
 ```ts
-{
+interface QueryOutput {
   raw: string
   normalized: string
   tokens: Token[]
