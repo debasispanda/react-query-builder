@@ -455,6 +455,119 @@ Build a React 18 JQL query builder supporting chained AND/OR clauses with auto-c
 
 ---
 
+## Phase 8: Connector Suggestion Flow Upgrade
+
+**Goal**: Show logical connectors by default after users complete `FIELD OPERATOR VALUE`.
+
+### Substeps
+
+- [ ] Extend context model in `src/types/jql.ts` to support connector expectation after a completed clause
+- [ ] Update `src/utils/contextDetector.ts` to return connector context after `FIELD -> OPERATOR -> VALUE`
+- [ ] Update `src/utils/suggestionProvider.ts`:
+  - [ ] Add connector suggestions (`AND`, `OR`, `NOT`) for connector context
+  - [ ] Keep existing field/operator filtering unchanged for current contexts
+- [ ] Update `src/components/JQLEditor.tsx` to open suggestions for connector context by default
+- [ ] Add tests in `src/__tests__/contextDetector.test.ts` for connector context transitions
+- [ ] Add tests in `src/__tests__/suggestionProvider.test.ts` for connector suggestions
+- [ ] Add integration coverage in `src/__tests__/JQLEditor.integration.test.tsx` to validate connector suggestions appear after value entry
+
+**Success Criteria**:
+- ✅ Connectors appear by default when a clause is complete
+- ✅ Selecting a connector returns suggestion context to fields for the next clause
+- ✅ Existing field/operator suggestion behavior remains stable
+
+### Verification
+
+- [ ] Context detector returns connector context after complete clause
+- [ ] Suggestion provider returns `AND`/`OR`/`NOT` for connector context
+- [ ] Integration test confirms connector dropdown appears after value
+
+---
+
+## Phase 9: Quote Handling & Input UX
+
+**Goal**: Improve value typing by auto-closing quoted values.
+
+### Substeps
+
+- [ ] Update `src/components/QueryInput.tsx` to auto-insert closing quote when user starts a value with `"`
+- [ ] Place caret between inserted quotes for immediate typing
+- [ ] Handle edge cases:
+  - [ ] Avoid duplicating closing quote when one already exists at cursor
+  - [ ] Preserve normal typing behavior outside value context
+- [ ] Add unit/integration tests for quote auto-close behavior and caret position
+
+**Success Criteria**:
+- ✅ Typing an opening quote in value context auto-completes to a quote pair
+- ✅ Caret is positioned inside the pair
+- ✅ No regressions in normal typing and suggestion interactions
+
+### Verification
+
+- [ ] Quote auto-close behavior works in editor input
+- [ ] Caret lands correctly after auto-insert
+- [ ] Existing QueryInput tests continue to pass
+
+---
+
+## Phase 10: `IN` Operator List Semantics
+
+**Goal**: Enforce list syntax for `IN` operator values (e.g. `(v1, v2, v3)`).
+
+### Substeps
+
+- [ ] Update parsing/token handling in `src/utils/tokenizer.ts` to support parenthesized list values used by `IN`
+- [ ] Update validation logic in `src/utils/validator.ts`:
+  - [ ] For `IN`, require parenthesized comma-separated list format
+  - [ ] Reject malformed list forms (missing parenthesis, empty list, missing commas)
+  - [ ] Keep non-`IN` operators on existing single-value rules
+- [ ] Add validator unit tests in `src/__tests__/validator.test.ts`:
+  - [ ] Valid: `priority IN (High, Medium, Low)`
+  - [ ] Invalid: `priority IN High`
+  - [ ] Invalid: `priority IN ()`
+  - [ ] Invalid: `priority IN (High Medium)`
+- [ ] Add tokenizer unit tests in `src/__tests__/tokenizer.test.ts` for `IN` list token handling
+
+**Success Criteria**:
+- ✅ `IN` accepts only list-style values
+- ✅ Malformed `IN` values produce clear validation errors
+- ✅ Existing non-`IN` validation behavior remains unchanged
+
+### Verification
+
+- [ ] Valid `IN` query passes validation
+- [ ] Invalid `IN` formats fail with expected error messages
+- [ ] Tokenizer tests confirm stable parsing for list values
+
+---
+
+## Phase 11: End-to-End Hardening for New Behaviors
+
+**Goal**: Validate new connector, quote, and `IN` list behaviors together in integration flows.
+
+### Substeps
+
+- [ ] Expand `src/__tests__/JQLEditor.integration.test.tsx` with end-to-end scenarios:
+  - [ ] Complete clause shows connector suggestions
+  - [ ] Quote auto-close works in value entry
+  - [ ] `IN` list query validates as expected
+  - [ ] Invalid `IN` list shows expected error state
+- [ ] Confirm output generation in `src/utils/queryBuilder.ts` preserves normalized formatting for `IN` lists
+- [ ] Run full regression suite: `npm run test -- --run`
+
+**Success Criteria**:
+- ✅ End-to-end flows cover connector suggestions, quote UX, and `IN` list validation
+- ✅ Output payload remains consistent and normalized
+- ✅ No regressions in existing tests
+
+### Verification
+
+- [ ] Integration suite passes with new scenarios
+- [ ] Full test suite passes in non-watch mode
+- [ ] Output normalization remains stable for new syntax
+
+---
+
 ## Key Decisions
 
 ✅ **Tokenization**: Regex `/("[^"]*"|[^\s]+)/g` (simple, efficient for MVP)  

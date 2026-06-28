@@ -1,73 +1,122 @@
-# React + TypeScript + Vite
+# JQL Query Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript query builder for Jira-like query syntax.
 
-Currently, two official plugins are available:
+This project provides a text-first JQL editor with guided suggestions, validation, and normalized output for backend consumption.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Current Capabilities
 
-## React Compiler
+- Field and operator suggestions based on cursor context.
+- Chained clauses using connectors (for example: `project = "Design" AND status = "ToDo"`).
+- Validation for field names, operators, clause completeness, and connector usage.
+- Output payload with both raw input and normalized query text.
+- Keyboard and mouse support for suggestion interactions.
+- Unit and integration test coverage with Vitest + React Testing Library.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Syntax Examples
 
-## Expanding the ESLint configuration
+Single clause:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+project = "Marketing"
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Chained clauses:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+project = "Design" AND status = "ToDo"
 ```
+
+Operator variants:
+
+```text
+assignee != "Alex"
+priority IN "High"
+```
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui (Popover + Command based suggestion UI)
+- Vitest + Testing Library
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Run tests:
+
+```bash
+npm run test
+```
+
+Run tests once (non-watch):
+
+```bash
+npm run test -- --run
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Key Project Structure
+
+```text
+src/
+  components/
+    JQLEditor.tsx
+    QueryInput.tsx
+    SuggestionPopover.tsx
+  utils/
+    schema.ts
+    tokenizer.ts
+    contextDetector.ts
+    suggestionProvider.ts
+    validator.ts
+    queryBuilder.ts
+  types/
+    jql.ts
+  __tests__/
+    tokenizer.test.ts
+    contextDetector.test.ts
+    suggestionProvider.test.ts
+    validator.test.ts
+    queryBuilder.test.ts
+    JQLEditor.integration.test.tsx
+```
+
+## Output Contract
+
+The editor emits a query output payload shaped as:
+
+```ts
+{
+  raw: string
+  normalized: string
+  tokens: Token[]
+  isValid: boolean
+  error?: string
+}
+```
+
+`raw` keeps user input unchanged, while `normalized` standardizes spacing.
+
+## Contributor Notes
+
+Implementation phases and execution checklist are maintained in [docs/plan.md](docs/plan.md).
